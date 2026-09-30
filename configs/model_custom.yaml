@@ -1,0 +1,28 @@
+# Custom Lightweight CNN Architecture (<5M parameters)
+model:
+  name: "custom_lightweight_cnn"
+  in_channels: 3
+  num_classes: 4
+  
+  # Architectural Blocks
+  blocks:
+    - { out_channels: 32, kernel_size: 3, stride: 1, padding: 1, pool: true }
+    - { out_channels: 64, kernel_size: 3, stride: 1, padding: 1, pool: true }
+    - { out_channels: 128, kernel_size: 3, stride: 1, padding: 1, pool: true }
+    - { out_channels: 128, kernel_size: 3, stride: 1, padding: 1, pool: true }
+  
+  # Classifier Head
+  head:
+    pooling: "global_avg"
+    dense_units: 384
+    dropout: 0.4
+    
+  # Training Hyperparameters (Defaults before Optuna tuning)
+  training:
+    epochs: 25
+    batch_size: 32
+    learning_rate: 0.0005
+    weight_decay: 0.00001
+    optimizer: "adamw"
+    lr_scheduler: "cosine"
+    early_stopping_patience: 7

@@ -1,0 +1,32 @@
+# Class-Incremental Learning Configuration
+continual:
+  task_split:
+    type: "2_1_1"
+    tasks:
+      - task_id: 1
+        classes: ["notumor", "meningioma"]
+      - task_id: 2
+        classes: ["glioma"]
+      - task_id: 3
+        classes: ["pituitary"]
+        
+  strategies:
+    naive:
+      description: "Naive fine-tuning on newly introduced classes without mitigation"
+      epochs_per_task: 15
+      learning_rate: 0.0003
+      
+    replay:
+      description: "Experience Replay with fixed-size exemplar buffer"
+      buffer_size_per_class: 50
+      replay_batch_ratio: 0.3  # 30% of each training batch from memory buffer
+      epochs_per_task: 15
+      learning_rate: 0.0003
+      
+    distillation:
+      description: "Knowledge Distillation (Learning without Forgetting - LwF)"
+      temperature: 2.0
+      alpha_kd: 0.5            # Weight for distillation loss
+      alpha_ce: 0.5            # Weight for new cross-entropy loss
+      epochs_per_task: 15
+      learning_rate: 0.0003

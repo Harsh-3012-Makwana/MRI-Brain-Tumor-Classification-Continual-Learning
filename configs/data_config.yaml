@@ -1,0 +1,40 @@
+# Data Preprocessing & Augmentation Configuration
+data:
+  dataset_name: "masoudnickparvar/brain-tumor-mri-dataset"
+  image_size: [150, 150]
+  in_channels: 3
+  classes:
+    - "glioma"
+    - "meningioma"
+    - "notumor"
+    - "pituitary"
+  
+  # OpenCV Contour-Based Skull Stripping
+  contour_crop:
+    enabled: true
+    blur_kernel: [5, 5]
+    threshold_method: "otsu"
+    min_contour_area_ratio: 0.05
+    padding: 0
+  
+  # Split Ratios
+  splits:
+    val_split_from_train: 0.15  # Extract 15% stratified validation set from Training/ split
+  
+  # Augmentations (Albumentations - Conservative Medical Imaging)
+  augmentations:
+    train:
+      horizontal_flip:
+        p: 0.5
+      shift_scale_rotate:
+        shift_limit: 0.05
+        scale_limit: 0.05
+        rotate_limit: 15
+        p: 0.5
+      brightness_contrast:
+        brightness_limit: 0.15
+        contrast_limit: 0.15
+        p: 0.5
+    val_test:
+      horizontal_flip:
+        p: 0.0

@@ -1,0 +1,19 @@
+# Global Project Configuration
+project_name: "mri-tumor-classification"
+seed: 42
+device: "cuda:0"
+deterministic: true
+
+# Logging & Storage Paths
+paths:
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
+  checkpoints_dir: "artifacts/checkpoints"
+  logs_dir: "artifacts/logs"
+  figures_dir: "artifacts/figures"
+  tensorboard_dir: "runs"
+
+# Hardware / Dataloader Settings
+system:
+  num_workers: 4
+  pin_memory: true

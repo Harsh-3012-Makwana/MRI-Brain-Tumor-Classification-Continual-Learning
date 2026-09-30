@@ -1,0 +1,15 @@
+# ResNet18 Transfer Learning Baseline Configuration
+model:
+  name: "resnet18_transfer"
+  weights: "IMAGENET1K_V1"
+  num_classes: 4
+  freeze_backbone_epochs: 3
+  
+  training:
+    epochs: 25
+    batch_size: 32
+    learning_rate: 0.0001
+    weight_decay: 0.0001
+    optimizer: "adamw"
+    lr_scheduler: "cosine"
+    early_stopping_patience: 7

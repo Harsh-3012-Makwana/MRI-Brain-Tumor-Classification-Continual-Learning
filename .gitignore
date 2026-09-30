@@ -1,0 +1,40 @@
+# Virtual Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Python Cache & Artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Data Directories (Raw MRI scans & caches)
+data/raw/
+data/processed/
+
+# Checkpoints & Model Weights
+artifacts/checkpoints/*.pt
+artifacts/checkpoints/*.pth
+artifacts/checkpoints/*.ckpt
+artifacts/checkpoints/*.onnx
+
+# Training Runs & Logs
+runs/
+artifacts/logs/*.csv
+artifacts/figures/*.png
+artifacts/figures/*.svg
+
+# Local IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Secrets & Kaggle API Token
+kaggle.json
+.env
