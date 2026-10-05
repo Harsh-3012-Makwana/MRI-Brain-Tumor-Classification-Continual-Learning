@@ -1,0 +1,89 @@
+# Phase 2.0 — ResNet18 Transfer Learning Baseline Experiment Configuration
+
+experiment:
+  name: "resnet18_baseline_transfer_learning"
+  version: "1.0.0"
+  seed: 42
+  deterministic: true
+  device: "cuda:0"
+
+dataset:
+  raw_data_dir: "data/raw"
+  manifests:
+    train_val: "artifacts/reports/train_validation_manifest.csv"
+    evaluation: "artifacts/reports/evaluation_manifest.csv"
+    class_counts: "artifacts/reports/data_pipeline_class_counts.csv"
+  input_resolution: [224, 224]
+  in_channels: 3
+  padding: 10
+  normalize_method: "imagenet"
+  val_split_ratio: 0.15
+
+dataloader:
+  batch_size: 32
+  num_workers: 4
+  pin_memory: true
+  train_shuffle: true
+
+model:
+  architecture: "resnet18"
+  weights_enum: "ResNet18_Weights.IMAGENET1K_V1"
+  num_classes: 4
+  class_mapping:
+    glioma: 0
+    meningioma: 1
+    notumor: 2
+    pituitary: 3
+
+training_strategies:
+  linear_probe:
+    name: "resnet18_frozen_linear_probe"
+    freeze_backbone: true
+    epochs: 25
+    optimizer:
+      type: "adamw"
+      lr: 0.001
+      weight_decay: 0.0001
+    scheduler:
+      type: "cosine"
+      min_lr: 1.0e-06
+    early_stopping:
+      patience: 7
+      monitor_metric: "val_loss"
+      mode: "min"
+
+  full_finetuning:
+    name: "resnet18_full_finetuning"
+    freeze_backbone: false
+    epochs: 25
+    optimizer:
+      type: "adamw"
+      lr: 0.0001
+      weight_decay: 0.0001
+    scheduler:
+      type: "cosine"
+      min_lr: 1.0e-06
+    early_stopping:
+      patience: 7
+      monitor_metric: "val_loss"
+      mode: "min"
+
+evaluation:
+  test_sets:
+    benchmark: "Raw Benchmark Test Set (1,311 images)"
+    filtered: "Leakage-Controlled Filtered Test Set (1,208 images)"
+  metrics:
+    - "accuracy"
+    - "macro_precision"
+    - "macro_recall"
+    - "macro_f1"
+    - "per_class_precision"
+    - "per_class_recall"
+    - "per_class_f1"
+    - "confusion_matrix"
+    - "training_time_seconds"
+    - "inference_latency_ms"
+
+logging:
+  artifacts_dir: "artifacts/checkpoints/resnet18_baseline"
+  experiment_log_json: "artifacts/reports/baseline_resnet18_results.json"

@@ -13,15 +13,19 @@ __pycache__/
 .coverage
 htmlcov/
 
-# Data Directories (Raw MRI scans & caches)
+# Data Directories (Raw MRI scans, archives & caches)
+data/
 data/raw/
 data/processed/
+data/downloads/
+*.zip
 
-# Checkpoints & Model Weights
-artifacts/checkpoints/*.pt
-artifacts/checkpoints/*.pth
-artifacts/checkpoints/*.ckpt
-artifacts/checkpoints/*.onnx
+# Checkpoints & Model Weights (Binary weights exceed GitHub 100MB limit)
+artifacts/checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.onnx
 
 # Training Runs & Logs
 runs/
@@ -29,7 +33,8 @@ artifacts/logs/*.csv
 artifacts/figures/*.png
 artifacts/figures/*.svg
 
-# Local IDE & OS
+# Local IDE, Scratch & OS
+scratch/
 .vscode/
 .idea/
 .DS_Store

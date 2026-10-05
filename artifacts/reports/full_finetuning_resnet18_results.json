@@ -1,0 +1,159 @@
+{
+  "experiment_name": "resnet18_full_finetuning",
+  "phase": "2.1B-2",
+  "timestamp": "2026-10-04T18:43:22Z",
+  "seed": 42,
+  "hardware": {
+    "device": "cuda:0",
+    "gpu_name": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "peak_vram_mb": 952.27
+  },
+  "model": {
+    "architecture": "resnet18",
+    "weights": "ResNet18_Weights.IMAGENET1K_V1",
+    "strategy": "full_finetuning",
+    "parameter_counts": {
+      "total_parameters": 11178564,
+      "trainable_parameters": 11178564,
+      "frozen_parameters": 0
+    },
+    "checkpoint_path": "artifacts\\checkpoints\\resnet18_full_finetuning\\best_model.pt",
+    "checkpoint_size_mb": 128.06
+  },
+  "training": {
+    "max_epochs": 25,
+    "best_epoch": 7,
+    "best_val_loss": 0.0436,
+    "learning_rate": 0.0001,
+    "weight_decay": 0.0001,
+    "batch_size": 32,
+    "total_train_time_seconds": 951.01,
+    "early_stopping_triggered": true
+  },
+  "evaluations": {
+    "benchmark_test": {
+      "accuracy": 0.9901,
+      "macro_precision": 0.9901,
+      "macro_recall": 0.9892,
+      "macro_f1": 0.9896,
+      "per_class": {
+        "glioma": {
+          "precision": 0.9966,
+          "recall": 0.9733,
+          "f1_score": 0.9848,
+          "support": 300
+        },
+        "meningioma": {
+          "precision": 0.9712,
+          "recall": 0.9902,
+          "f1_score": 0.9806,
+          "support": 306
+        },
+        "notumor": {
+          "precision": 0.9926,
+          "recall": 1.0,
+          "f1_score": 0.9963,
+          "support": 405
+        },
+        "pituitary": {
+          "precision": 1.0,
+          "recall": 0.9933,
+          "f1_score": 0.9967,
+          "support": 300
+        }
+      },
+      "confusion_matrix": [
+        [
+          292,
+          7,
+          1,
+          0
+        ],
+        [
+          1,
+          303,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          405,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          298
+        ]
+      ],
+      "total_samples": 1311,
+      "inference_time_seconds": 8.5334,
+      "latency_ms_per_sample": 6.5091,
+      "evaluation_protocol": "Original Benchmark Test Set (1,311 images)"
+    },
+    "filtered_test": {
+      "accuracy": 0.9892,
+      "macro_precision": 0.9895,
+      "macro_recall": 0.9892,
+      "macro_f1": 0.9893,
+      "per_class": {
+        "glioma": {
+          "precision": 0.9966,
+          "recall": 0.9733,
+          "f1_score": 0.9848,
+          "support": 300
+        },
+        "meningioma": {
+          "precision": 0.971,
+          "recall": 0.9901,
+          "f1_score": 0.9805,
+          "support": 304
+        },
+        "notumor": {
+          "precision": 0.9904,
+          "recall": 1.0,
+          "f1_score": 0.9952,
+          "support": 309
+        },
+        "pituitary": {
+          "precision": 1.0,
+          "recall": 0.9932,
+          "f1_score": 0.9966,
+          "support": 295
+        }
+      },
+      "confusion_matrix": [
+        [
+          292,
+          7,
+          1,
+          0
+        ],
+        [
+          1,
+          301,
+          2,
+          0
+        ],
+        [
+          0,
+          0,
+          309,
+          0
+        ],
+        [
+          0,
+          2,
+          0,
+          293
+        ]
+      ],
+      "total_samples": 1208,
+      "inference_time_seconds": 7.6932,
+      "latency_ms_per_sample": 6.3685,
+      "evaluation_protocol": "Leakage-Controlled Filtered Test Set (1,208 images)"
+    }
+  }
+}

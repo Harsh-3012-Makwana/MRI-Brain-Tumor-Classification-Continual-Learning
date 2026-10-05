@@ -1,0 +1,6 @@
+class_label,train_count,val_count,benchmark_test_count,excluded_test_count,filtered_test_count
+glioma,1123,198,300,0,300
+meningioma,1138,201,306,2,304
+notumor,1356,239,405,96,309
+pituitary,1238,219,300,5,295
+TOTAL,4855,857,1311,103,1208

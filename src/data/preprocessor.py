@@ -1,4 +1,4 @@
-"""OpenCV contour-based skull stripping, cropping, and image normalization pipeline."""
+"""OpenCV contour-based skull stripping, cropping, padding, and image normalization pipeline."""
 
 from typing import Tuple, Optional
 import cv2
@@ -6,13 +6,14 @@ import numpy as np
 
 
 class MRIPreprocessor:
-    """Preprocesses brain MRI scans via contour detection, background cropping, resizing, and normalization."""
+    """Preprocesses brain MRI scans via contour detection, background cropping with safety padding, resizing, and normalization."""
 
     def __init__(
         self,
         target_size: Tuple[int, int] = (150, 150),
         blur_kernel: Tuple[int, int] = (5, 5),
         min_contour_area_ratio: float = 0.05,
+        padding: int = 0,
     ):
         """Initializes the MRI preprocessor.
 
@@ -20,21 +21,24 @@ class MRIPreprocessor:
             target_size: Target (height, width) for model input. Default: (150, 150).
             blur_kernel: Gaussian blur kernel size for noise reduction. Default: (5, 5).
             min_contour_area_ratio: Minimum ratio of image area for contour to be considered brain tissue.
+            padding: Extra bounding-box safety padding (in pixels) added around cropped brain region.
         """
         self.target_size = target_size
         self.blur_kernel = blur_kernel
         self.min_contour_area_ratio = min_contour_area_ratio
+        self.padding = max(0, int(padding))
 
     def crop_brain_contour(self, image: np.ndarray) -> np.ndarray:
-        """Finds the extreme outer contours of the brain/skull and crops out surrounding black borders.
+        """Finds the extreme outer contours of the brain/skull and crops out surrounding black borders with optional safety padding.
 
         Order of operations:
         1. Convert image to grayscale.
         2. Apply Gaussian blur to reduce high-frequency scanner noise.
         3. Threshold image (Otsu's thresholding) to create binary brain mask.
-        4. Apply morphological closing to seal gaps within cranial boundaries.
+        4. Apply morphological closing and opening to seal gaps within cranial boundaries.
         5. Find contours, locate largest contour, and extract bounding coordinates (top, bottom, left, right).
-        6. Crop original image to bounding box. Fall back to uncropped image if no valid contour is found.
+        6. Apply configurable safety padding and clip coordinates strictly inside image boundaries.
+        7. Crop original image to bounding box. Fall back to uncropped image if no valid contour is found.
 
         Args:
             image: Input image array of shape (H, W, 3) or (H, W).
@@ -69,7 +73,8 @@ class MRIPreprocessor:
 
         # Select the contour with the largest area (the skull/brain)
         largest_contour = max(contours, key=cv2.contourArea)
-        total_area = image.shape[0] * image.shape[1]
+        img_h, img_w = image.shape[0], image.shape[1]
+        total_area = img_h * img_w
 
         # Guard against tiny artifact contours
         if cv2.contourArea(largest_contour) < self.min_contour_area_ratio * total_area:
@@ -78,8 +83,14 @@ class MRIPreprocessor:
         # Determine extreme boundary points
         x, y, w, h = cv2.boundingRect(largest_contour)
         
+        # Apply safety padding with boundary clipping
+        y1 = max(0, y - self.padding)
+        y2 = min(img_h, y + h + self.padding)
+        x1 = max(0, x - self.padding)
+        x2 = min(img_w, x + w + self.padding)
+
         # Safe slicing
-        cropped = image[y : y + h, x : x + w]
+        cropped = image[y1:y2, x1:x2]
         if cropped.size == 0:
             return image
 

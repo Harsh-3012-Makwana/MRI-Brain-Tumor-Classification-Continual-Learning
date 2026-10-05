@@ -1,0 +1,62 @@
+{
+  "accuracy": 0.8772,
+  "macro_precision": 0.8745,
+  "macro_recall": 0.8702,
+  "macro_f1": 0.8718,
+  "per_class": {
+    "glioma": {
+      "precision": 0.8913,
+      "recall": 0.82,
+      "f1_score": 0.8542,
+      "support": 300
+    },
+    "meningioma": {
+      "precision": 0.7587,
+      "recall": 0.781,
+      "f1_score": 0.7697,
+      "support": 306
+    },
+    "notumor": {
+      "precision": 0.922,
+      "recall": 0.963,
+      "f1_score": 0.942,
+      "support": 405
+    },
+    "pituitary": {
+      "precision": 0.9259,
+      "recall": 0.9167,
+      "f1_score": 0.9213,
+      "support": 300
+    }
+  },
+  "confusion_matrix": [
+    [
+      246,
+      46,
+      3,
+      5
+    ],
+    [
+      20,
+      239,
+      30,
+      17
+    ],
+    [
+      5,
+      10,
+      390,
+      0
+    ],
+    [
+      5,
+      20,
+      0,
+      275
+    ]
+  ],
+  "total_samples": 1311,
+  "inference_time_seconds": 7.118,
+  "latency_ms_per_sample": 5.4294,
+  "evaluation_protocol": "Original Benchmark Test Set (1,311 images)"
+}

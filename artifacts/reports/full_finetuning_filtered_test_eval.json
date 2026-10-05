@@ -1,0 +1,62 @@
+{
+  "accuracy": 0.9892,
+  "macro_precision": 0.9895,
+  "macro_recall": 0.9892,
+  "macro_f1": 0.9893,
+  "per_class": {
+    "glioma": {
+      "precision": 0.9966,
+      "recall": 0.9733,
+      "f1_score": 0.9848,
+      "support": 300
+    },
+    "meningioma": {
+      "precision": 0.971,
+      "recall": 0.9901,
+      "f1_score": 0.9805,
+      "support": 304
+    },
+    "notumor": {
+      "precision": 0.9904,
+      "recall": 1.0,
+      "f1_score": 0.9952,
+      "support": 309
+    },
+    "pituitary": {
+      "precision": 1.0,
+      "recall": 0.9932,
+      "f1_score": 0.9966,
+      "support": 295
+    }
+  },
+  "confusion_matrix": [
+    [
+      292,
+      7,
+      1,
+      0
+    ],
+    [
+      1,
+      301,
+      2,
+      0
+    ],
+    [
+      0,
+      0,
+      309,
+      0
+    ],
+    [
+      0,
+      2,
+      0,
+      293
+    ]
+  ],
+  "total_samples": 1208,
+  "inference_time_seconds": 7.6932,
+  "latency_ms_per_sample": 6.3685,
+  "evaluation_protocol": "Leakage-Controlled Filtered Test Set (1,208 images)"
+}

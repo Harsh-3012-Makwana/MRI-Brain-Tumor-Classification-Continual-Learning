@@ -1,0 +1,169 @@
+{
+  "audit_phase": "Phase 2.1B-3",
+  "audit_title": "Baseline Research Audit: ResNet18 Linear Probe vs Full Fine-Tuning",
+  "timestamp": "2026-10-05T06:15:00Z",
+  "status": "COMPLETED",
+  "verdict": "READY FOR CONTINUAL LEARNING",
+  "environment": {
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5)",
+    "pytorch_version": "2.12.0.dev20260408+cu128",
+    "torchvision_version": "0.27.0.dev20260407+cu128",
+    "cuda_version": "12.8",
+    "device": "cuda:0",
+    "gpu_model": "NVIDIA GeForce RTX 5060 Laptop GPU",
+    "os_platform": "Windows-10-10.0.26200-SP0",
+    "random_seed": 42,
+    "git_commit": "849f444e4c699a10ee0b6f46148251a42bba143c"
+  },
+  "configuration_consistency": {
+    "dataset_source": "SAME",
+    "class_definitions": "SAME",
+    "train_val_test_split": "SAME",
+    "random_seed": "SAME",
+    "preprocessing_pipeline": "SAME",
+    "image_size": "SAME",
+    "normalization": "SAME",
+    "training_augmentations": "SAME",
+    "resnet18_architecture": "SAME",
+    "imagenet_pretrained_weights": "SAME",
+    "classification_head": "SAME",
+    "loss_function": "SAME",
+    "optimizer": "SAME",
+    "learning_rate": "DIFFERENT",
+    "learning_rate_linear_probe": 0.001,
+    "learning_rate_full_finetuning": 0.0001,
+    "batch_size": "SAME",
+    "maximum_epochs": "SAME",
+    "early_stopping_patience": "SAME",
+    "checkpoint_selection_criterion": "SAME",
+    "batchnorm_behavior": "DIFFERENT",
+    "batchnorm_linear_probe": "frozen (eval mode, static running stats)",
+    "batchnorm_full_finetuning": "unfrozen (train mode, updates running stats)",
+    "device": "SAME",
+    "dataloader_settings": "SAME"
+  },
+  "data_split_audit": {
+    "total_images": 7023,
+    "train_images": 4855,
+    "validation_images": 857,
+    "benchmark_test_images": 1311,
+    "filtered_test_images": 1208,
+    "exact_duplicates_filtered": 103,
+    "duplicate_filtering_criterion": "Exact SHA-256 byte hash match against training split",
+    "test_set_used_for_model_selection": false,
+    "patient_level_independence_established": false,
+    "patient_level_disclaimer": "Patient-level independence was not established."
+  },
+  "performance_audit": {
+    "linear_probe": {
+      "best_epoch": 23,
+      "best_val_loss": 0.2388,
+      "best_val_acc": 0.9113,
+      "benchmark_test": {
+        "accuracy": 0.8772,
+        "macro_precision": 0.8745,
+        "macro_recall": 0.8702,
+        "macro_f1": 0.8718,
+        "per_class": {
+          "glioma": {"precision": 0.8913, "recall": 0.8200, "f1_score": 0.8542, "support": 300},
+          "meningioma": {"precision": 0.7587, "recall": 0.7810, "f1_score": 0.7697, "support": 306},
+          "notumor": {"precision": 0.9220, "recall": 0.9630, "f1_score": 0.9420, "support": 405},
+          "pituitary": {"precision": 0.9259, "recall": 0.9167, "f1_score": 0.9213, "support": 300}
+        },
+        "confusion_matrix": [
+          [246, 46, 3, 5],
+          [20, 239, 30, 17],
+          [5, 10, 390, 0],
+          [5, 20, 0, 275]
+        ]
+      },
+      "filtered_test": {
+        "accuracy": 0.8767,
+        "macro_precision": 0.8771,
+        "macro_recall": 0.8763,
+        "macro_f1": 0.8758,
+        "per_class": {
+          "glioma": {"precision": 0.9011, "recall": 0.8200, "f1_score": 0.8586, "support": 300},
+          "meningioma": {"precision": 0.7778, "recall": 0.7829, "f1_score": 0.7803, "support": 304},
+          "notumor": {"precision": 0.9050, "recall": 0.9871, "f1_score": 0.9443, "support": 309},
+          "pituitary": {"precision": 0.9247, "recall": 0.9153, "f1_score": 0.9199, "support": 295}
+        },
+        "confusion_matrix": [
+          [246, 46, 3, 5],
+          [20, 238, 29, 17],
+          [2, 2, 305, 0],
+          [5, 20, 0, 270]
+        ]
+      }
+    },
+    "full_finetuning": {
+      "best_epoch": 7,
+      "best_val_loss": 0.0436,
+      "best_val_acc": 0.9883,
+      "benchmark_test": {
+        "accuracy": 0.9901,
+        "macro_precision": 0.9901,
+        "macro_recall": 0.9892,
+        "macro_f1": 0.9896,
+        "per_class": {
+          "glioma": {"precision": 0.9966, "recall": 0.9733, "f1_score": 0.9848, "support": 300},
+          "meningioma": {"precision": 0.9712, "recall": 0.9902, "f1_score": 0.9806, "support": 306},
+          "notumor": {"precision": 0.9926, "recall": 1.0000, "f1_score": 0.9963, "support": 405},
+          "pituitary": {"precision": 1.0000, "recall": 0.9933, "f1_score": 0.9967, "support": 300}
+        },
+        "confusion_matrix": [
+          [292, 7, 1, 0],
+          [1, 303, 2, 0],
+          [0, 0, 405, 0],
+          [0, 2, 0, 298]
+        ]
+      },
+      "filtered_test": {
+        "accuracy": 0.9892,
+        "macro_precision": 0.9895,
+        "macro_recall": 0.9892,
+        "macro_f1": 0.9893,
+        "per_class": {
+          "glioma": {"precision": 0.9966, "recall": 0.9733, "f1_score": 0.9848, "support": 300},
+          "meningioma": {"precision": 0.9710, "recall": 0.9901, "f1_score": 0.9805, "support": 304},
+          "notumor": {"precision": 0.9904, "recall": 1.0000, "f1_score": 0.9952, "support": 309},
+          "pituitary": {"precision": 1.0000, "recall": 0.9932, "f1_score": 0.9966, "support": 295}
+        },
+        "confusion_matrix": [
+          [292, 7, 1, 0],
+          [1, 301, 2, 0],
+          [0, 0, 309, 0],
+          [0, 2, 0, 293]
+        ]
+      }
+    }
+  },
+  "compute_comparison": {
+    "total_parameters": 11178564,
+    "trainable_parameters_linear_probe": 2052,
+    "trainable_parameters_full_finetuning": 11178564,
+    "training_duration_seconds_linear_probe": 1495.87,
+    "training_duration_seconds_full_finetuning": 951.01,
+    "total_epochs_linear_probe": 25,
+    "total_epochs_full_finetuning": 14,
+    "mean_epoch_duration_seconds_linear_probe": 59.83,
+    "mean_epoch_duration_seconds_full_finetuning": 67.93,
+    "peak_gpu_vram_mb_linear_probe": 353.86,
+    "peak_gpu_vram_mb_full_finetuning": 952.27,
+    "checkpoint_size_mb_linear_probe": 42.74,
+    "checkpoint_size_mb_full_finetuning": 128.06,
+    "inference_latency_ms_linear_probe": 5.51,
+    "inference_latency_ms_full_finetuning": 6.37
+  },
+  "runtime_explanation": {
+    "measured_fact": "Full fine-tuning required 951.01 s across 14 epochs (67.93 s/epoch) whereas linear probing required 1,495.87 s across 25 epochs (59.83 s/epoch).",
+    "implementation_explanation": "Full fine-tuning had a 13.5% higher per-epoch computational cost due to backpropagating through all 18 layers. However, early stopping triggered at epoch 14 (patience=7 after best epoch 7), whereas linear probing ran the full 25 epochs (best epoch 23 did not exhaust patience).",
+    "hypothesis": "End-to-end parameter adaptation permitted faster convergence of representation features to optimal loss on MRI slices, shortening epoch count."
+  },
+  "test_suite_status": {
+    "total_tests": 25,
+    "passed_tests": 25,
+    "failed_tests": 0,
+    "status": "ALL_PASSED"
+  }
+}
